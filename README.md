@@ -5,9 +5,18 @@ Voir [énoncé](enonce.md)
 ### explication des dossiers
 ```
     src: code source en C
+    include: fichiers d'en-tête
+    obj: fichiers objets
+    bin: fichiers exécutables
     algos: algorithmes implémentés par la suite en C
 ```
 
 La compilation sera prise en charge par cmake, il convient donc
 d'avoir cmake et/ou CLion sur sa machine afin de pouvoir compiler convenablement
 le code source.
+
+### commandes utiles
+```
+make run
+make clean
+```

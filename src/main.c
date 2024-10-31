@@ -11,6 +11,7 @@ int main() {
 
     // Test d'initialisation d'un neurone avec 3 entrées
     Neurone neurone = InitNeur(TAILLE);
+
     int entrees[TAILLE] = {3,4,5};
 
     // Affichage des poids et du biais
@@ -22,8 +23,8 @@ int main() {
 
     printf("Valeur de retour: %d\n", Outneurone(entrees, &neurone));
 
-    // Initialisation d'une couche avec 2 neurones, chacun ayant 3 entrées
-    Couche couche = InitCouche(3, TAILLE+4);
+    // Initialisation d'une couche avec 3 neurones, chacun ayant 3 entrées
+    Couche couche = InitCouche(3, TAILLE);
     if (couche.neurones == NULL) {
         printf("Échec de l'initialisation de la couche.\n");
         return 1;
@@ -38,12 +39,12 @@ int main() {
         printf("  Biais: %d\n\n", couche.neurones[i].biais);
     }
 
-    // Définition des entrées pour la couche
-    int entreesCouche[TAILLE] = {1, 2, 3};
+    int sortiesCouche[TAILLE];
+    OutCouche(&couche, entrees, sortiesCouche);
 
-    // Définition du seuil d'activation
-    int seuil = 1;
-
+    for(int i = 0; i < TAILLE; i++) {
+        printf("sortie neurone[%d]:%d\n", i, sortiesCouche[i]);
+    }
 
     return 0;
 }

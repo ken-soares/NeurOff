@@ -5,7 +5,7 @@
 // Initialise un neurone avec des poids et un biais aléatoires
 Neurone InitNeur(int nombreEntrees) {
     Neurone n;
-    n.biais = rand() % 10;
+    n.biais = rand() % 101 + 1;
 
     n.poids = 0;
     n.nbPoids = nombreEntrees;
@@ -15,7 +15,7 @@ Neurone InitNeur(int nombreEntrees) {
         free(n.poids);
         return (Neurone){0};
     }
-    for (size_t i = 0; i < nombreEntrees; i++)
+    for (int i = 0; i < nombreEntrees; i++)
     {
         n.poids[i] = rand() % 10; // Valeur aléatoire entre 0
     }

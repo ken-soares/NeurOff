@@ -16,6 +16,6 @@ Couche InitCouche(int nombre_neurones, int nombre_entrees);
 // Fonction pour calculer les sorties d'une couche en fonction des entrées et d'un seuil
 // Prend en paramètres la couche, la liste des entrées et le seuil d'activation
 // Retourne un tableau d'entiers représentant les sorties de chaque neurone
-int OutCouche(Couche couche, int entrees, int seuil);
+void OutCouche(Couche *couche, int *entrees, int *sorties);
 
 #endif // NEUROFF_COUCHE_H

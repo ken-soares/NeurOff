@@ -17,7 +17,7 @@ Début
 	fin si
 Fin
 
-fonction Outneurone(e: liste<Entier>, n: neurone, seuil: Entier) : Entier
+fonction Outneurone(e: liste<Entier>, n: neurone) : Entier
 Début
 
 	x: Entier <- 0
@@ -28,6 +28,6 @@ Début
 		e <- succ(e)
 	fait
 	
-	Outneurone <- activation(x, seuil)
+	Outneurone <- activation(x, seuil(n))
 Fin
 ```

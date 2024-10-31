@@ -16,7 +16,7 @@ Cette fonction permet d'initialiser un neurone artificiel avec un nombre d'entr�
 Fonction InitNeur(nombreEntrées: Entier) : Neurone
 Début
     // Création et initialisation du neurone
-    n : Neurone <- CréerUnNeurone()
+    n : Neurone <- CreerUnNeurone()
     poids(n) : Liste<Entier> <- ListeDeTaille(nombreEntrées)
 
     // Initialisation aléatoire du biais

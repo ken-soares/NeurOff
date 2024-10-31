@@ -10,12 +10,16 @@ typedef struct {
 
 // Fonction pour initialiser un neurone avec des poids et un biais aléatoires
 // Prend en paramètre le nombre d'entrées
-// Retourne un pointeur vers le neurone initialisé ou NULL si l'allocation échoue
-Neurone* InitNeur(int nombreEntrees);
+// Retourne une structure Neurone initialisée
+Neurone InitNeur(int nombreEntrees);
+
+// Fonction pour libérer la mémoire allouée pour un neurone (la liste)
+// Prend en paramètre un pointeur vers la structure Neurone
+void FreeNeur(Neurone* neurone);
 
 // Fonction pour calculer la sortie d'un neurone en fonction d'une liste d'entrées
 // Prend en paramètre le neurone et la liste d'entrées
 // Retourne la sortie du neurone
-//int Outneurone(Neurone* neurone, int* entrees, int nbEntrees);
+int Outneurone(int *e, Neurone *n);
 
 #endif //NEUROFF_NEURONE_H

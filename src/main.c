@@ -3,12 +3,13 @@
 #include <time.h>
 #include "neurone.h"
 #include "couche.h"
-
+#include "reseau.h"
 #define TAILLE 3
 
 int main() {
     srand(time(NULL));
 
+    /*
     // Test d'initialisation d'un neurone avec 3 entrées
     Neurone neurone = InitNeur(TAILLE);
 
@@ -45,6 +46,35 @@ int main() {
     for(int i = 0; i < TAILLE; i++) {
         printf("sortie neurone[%d]:%d\n", i, sortiesCouche[i]);
     }
+*/
+
+    //////////////////////////////////////////////////////////////
+    //test partie 3
+    // Définition de la structure du réseau (exemple avec 3 couches)
+    int nombre_couches = 3;
+    int liste_neurones[] = {3, 2, 1}; // 3 neurones dans la première couche, 2 dans la deuxième, 1 dans la troisième
+
+    // Création du réseau de neurones
+    ResNeur reseau = CreerResNeur(nombre_couches, liste_neurones, TAILLE);
+    if (reseau.couches == 0) {
+        printf("Échec de l'initialisation du réseau de neurones.\n");
+        return 1;
+    }
+
+    // Affichage des détails du réseau
+    for (int i = 0; i < reseau.nbCouches; i++) {
+        printf("Couche %d:\n", i + 1);
+        for (int j = 0; j < reseau.couches[i].nbNeurones; j++) {
+            printf("  Neurone %d:\n", j + 1);
+            for (int k = 0; k < reseau.couches[i].neurones[j].nbPoids; k++) {
+                printf("    Poids %d: %d\n", k, reseau.couches[i].neurones[j].poids[k]);
+            }
+            printf("    Biais: %d\n", reseau.couches[i].neurones[j].biais);
+        }
+    }
+
+    // Libération de la mémoire allouée au réseau
+    FreeResNeur(&reseau);
 
     return 0;
 }

@@ -21,6 +21,12 @@ Couche InitCouche(int nombre_neurones, int nombre_entrees)
     return couche;
 }
 
+void FreeCouche(Couche *couche) {
+    free(couche->neurones);
+    couche->neurones = 0;
+    couche->nbNeurones = 0;
+}
+
 void OutCouche(Couche *couche, int *entrees, int *sorties) {
     for(int i = 0; i < couche->nbNeurones;i++) {
         sorties[i] = Outneurone(entrees, &(couche->neurones[i]));

@@ -29,6 +29,7 @@ void FreeNeur(Neurone* neurone) {
         free(neurone->poids);
         neurone->poids = NULL;
     }
+    neurone->nbPoids = 0;
 }
 
 

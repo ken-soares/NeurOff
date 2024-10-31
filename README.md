@@ -11,9 +11,8 @@ Voir [énoncé](enonce.md)
     algos: algorithmes implémentés par la suite en C
 ```
 
-La compilation sera prise en charge par cmake, il convient donc
-d'avoir cmake et/ou CLion sur sa machine afin de pouvoir compiler convenablement
-le code source.
+La compilation sera prise en compte par Make via un Makefile et le compilateur
+GCC. Il conviendra d'avoir les deux programmes installés sur sa machine
 
 ### commandes utiles
 ```

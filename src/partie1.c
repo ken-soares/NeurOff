@@ -17,7 +17,7 @@ Neurone InitNeur(int nombreEntrees) {
     }
     for (int i = 0; i < nombreEntrees; i++)
     {
-        n.poids[i] = rand() % 10; // Valeur aléatoire entre 0
+        n.poids[i] = rand() % 101 + 1; // Valeur aléatoire entre 0
     }
     
     return n;

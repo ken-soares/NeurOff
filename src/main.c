@@ -12,7 +12,7 @@ int main() {
     // Test d'initialisation d'un neurone avec 3 entrées
     Neurone neurone = InitNeur(TAILLE);
 
-    int entrees[TAILLE] = {3,4,5};
+    int entrees[TAILLE] = {1,2,3};
 
     // Affichage des poids et du biais
     printf("Poids du neurone:\n");

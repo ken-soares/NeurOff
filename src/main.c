@@ -3,11 +3,15 @@
 #include <time.h>
 #include "neurone.h"
 
+#define TAILLE 3
+
 int main() {
     srand(time(NULL));
 
     // Test d'initialisation d'un neurone avec 3 entrées
-    Neurone* neurone = InitNeur(3);
+    Neurone* neurone = InitNeur(TAILLE);
+    int entrees[TAILLE] = {3,4,5};
+
     if (neurone == NULL) {
         printf("Erreur lors de l'initialisation du neurone\n");
         return 1;
@@ -20,6 +24,7 @@ int main() {
     }
     printf("Biais: %d\n\n", neurone->biais);
 
+    printf("Valeur de retour: %d\n", Outneurone(entrees, neurone));
 
     return 0;
 }

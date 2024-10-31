@@ -26,3 +26,21 @@ Neurone* InitNeur(int nombreEntrees) {
 
     return n;
 }
+
+int activation(int x, int seuil) {
+    if (x >= seuil) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+
+int Outneurone(int *e, Neurone *n) {
+    int x;
+    for(int i = 0; i < n->nbPoids; i++) {
+        x += n->poids[i] * e[i];
+    }
+
+    return activation(x, n->biais);
+}

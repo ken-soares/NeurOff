@@ -1,9 +1,16 @@
 # Partie 1: Neurone artificiel, fonction Outneurone
 
+## Lexique
+  Un neurone est un type structuré :
+    poids X biais : Liste<Entier> X Entier
+
 ## Données:
 - liste d'entiers e
 - neurone n
-- entier seuil
+- entier seuil (pour la fonction activation)
+
+## Résultat
+- entier : 0 ou 1
 
 
 ## algorithme:

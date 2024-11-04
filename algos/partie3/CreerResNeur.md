@@ -3,8 +3,8 @@
 Permet de créer et initialiser un réseau de neurones avec un nombre donné de couches et une liste de neurones pour chaque couche.
 
 ## Lexique
-- Un réseau de neurones est défini par ResNeur qui contient un nombre de couches et une liste de couches.
-- Une couche de neurones est définie par Couche qui contient un nombre de neurones et une liste de neurones.
+Un réseau de neurones est défini par une structure contenant:
+- nombre_couches X liste_neurones : Entier X Liste<Entier>
 
 ## Données
 - `nombre_couches` un entier représentant le nombre de couches dans le réseau de neurones.
@@ -19,14 +19,18 @@ Permet de créer et initialiser un réseau de neurones avec un nombre donné de 
 Fonction CreerResNeur(nombre_couches: Entier, liste_neurones: Liste<Entier>, nombre_poids_entree: Entier) : ResNeur
 Début
     // Création et initialisation du réseau de neurones
-    reseau : ResNeur
-    reseau.nbCouches <- nombre_couches
-    reseau.couches <- CreerListeVide()
-    tete : Liste<Couche> <- reseau.couches
+    reseau : ResNeur <- CreerUnResNeur()
+    nbCouches(reseau) : Entier <- nombre_couches
+    couches(reseau) : Liste<Couche> <- CreerListeVide()
+    tete : Liste<Couche> <- couches(reseau)
+
     i : Entier
     couche : Couche <- INDEFINI
+
     nombre_neurones_couche : Entier <- INDEFINI
     nombre_neurones_couche_precedente : Entier <- INDEFINI
+
+
     pour i allant de 0 à nombre_couches - 1 faire
         nombre_neurones_couche <- valeur(liste_neurones)
         si i est égal à 0 alors
@@ -35,8 +39,7 @@ Début
             nombre_neurones_couche_precedente <- nombre_neurones_couche
         fin si
         couche <- InitCouche(nombre_neurones_couche, nombre_neurones_couche_precedente)
-        valeur(tete) <- couche
-        tete <- suivant(tete)
+        tete <- insererQueue(tete, couche)
         liste_neurones <- succ(liste_neurones)
     fait
 

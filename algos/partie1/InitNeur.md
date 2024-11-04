@@ -1,7 +1,8 @@
 # Partie 1: Neurone artificiel, fonction InitNeur
 
-## Description
-Cette fonction permet d'initialiser un neurone artificiel avec un nombre d'entrées donné. Elle génère aléatoirement les poids associés à chaque entrée ainsi que le biais du neurone.
+## Lexique
+  Un neurone est un type structuré :
+    poids X biais : Liste<Entier> X Entier
 
 ## Données
 - nombre_entrees : Entier (nombre d'entrées du neurone à créer)
@@ -17,16 +18,17 @@ Fonction InitNeur(nombreEntrées: Entier) : Neurone
 Début
     // Création et initialisation du neurone
     n : Neurone <- CreerUnNeurone()
-    poids(n) : Liste<Entier> <- ListeDeTaille(nombreEntrées)
+    poids(n) : Liste<Entier> <- ListVide()
 
     // Initialisation aléatoire du biais
     biais(n) <- NombreAléatoire()
     
     // Initialisation aléatoire des poids
     p : Liste<Entier> <- poids(n)
-    tant que p /= indéfini faire
-        val(p) <- NombreAléatoire()
-        p <- succ(p)
+    p <- insererQueue(NombreAléatoire())
+    tant que nombreEntrées > 0 faire
+        p <- insererQueue(NombreAléatoire())
+        nombreEntrées <- nombreEntrées - 1
     fait
     
     InitNeur <- n

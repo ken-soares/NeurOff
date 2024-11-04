@@ -8,8 +8,10 @@ de la couche. A noter que cette liste est la même pour chaque neurone de la
 couche. Cette Opération réutilise l'opération `Outneurone`
 
 ## Lexique
-- Une couche de neurones est définie par Liste<Neurone> x Entier 
-où l'entier est le nombre de neurones de la couche
+Une couche de neurones est définie par le une liste de neurones et le nombre de neurones dans la couche
+- nombre_neurones X nombre_entrees : Entier X Entier
+Une couche est définie par une liste de neurones
+- couche : Liste<Neurone>
 
 ## Données
 - `couche` une couche de neurones
@@ -26,7 +28,7 @@ procédure Outcouche(couche: Couche, liste_entrees: Liste<Entier>, liste_sorties
 Début
 
     Tantque non estVide(liste(couche)) faire
-        ajouterQueue(liste_sorties, Outneurone(liste_entrees, val(liste(couche))))
+        liste_sorties <- insererQueue(Outneurone(liste_entrees, val(liste(couche))))
     fait
 
 Fin

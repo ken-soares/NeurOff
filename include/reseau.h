@@ -2,9 +2,10 @@
 #define NEUROFF_RESEAU_H
 
 #include "couche.h"
+#include "linkedlist.h"
 
 typedef struct {
-    Couche* couches;
+    LinkedList* couches;
     int nbCouches;
 } ResNeur;
 
@@ -13,5 +14,8 @@ ResNeur CreerResNeur(int nombre_couches, int* liste_neurones, int nombre_poids_e
 
 // Free the neural network memory
 void FreeResNeur(ResNeur* reseau);
+
+// Propagate inputs through the network and obtain outputs
+LinkedList* Propagate(ResNeur* reseau, LinkedList* entrees);
 
 #endif // NEUROFF_RESEAU_H

@@ -1,5 +1,6 @@
 #include "graphics.h"
 #include <stdio.h>
+#include <string.h>
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -8,6 +9,12 @@
 #define HORIZONTAL_SPACING 150
 
 static ResNeur* g_reseau = NULL;
+
+// Structure to hold neuron positions for drawing connections
+typedef struct {
+    int x;
+    int y;
+} NeuronPosition;
 
 // Helper function to draw a neuron
 void DrawNeuron(HDC hdc, int x, int y, int neuronIndex) {
@@ -42,35 +49,97 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
             HDC hdc = BeginPaint(hwnd, &ps);
             
             if (g_reseau) {
-                for (int i = 0; i < g_reseau->nbCouches; i++) {
-                    Couche couche = g_reseau->couches[i];
-                    int nb_neurones = couche.nbNeurones;
+                ListNode* current_couche_node = g_reseau->couches->head;
+                int couche_index = 0;
+
+                // Array to store neuron positions of the previous layer
+                NeuronPosition* prev_positions = NULL;
+                int prev_neurons = 0;
+
+                while (current_couche_node) {
+                    Couche* couche = (Couche*)current_couche_node->data;
+                    int nb_neurones = couche->nbNeurones;
                     int spacing_y = (nb_neurones > 1) ? WINDOW_HEIGHT / (nb_neurones + 1) : WINDOW_HEIGHT / 2;
-                    
-                    for (int j = 0; j < nb_neurones; j++) {
-                        int x = LAYER_SPACING + i * LAYER_SPACING;
-                        int y = spacing_y * (j + 1);
-                        
+
+                    // Allocate memory to store current layer's neuron positions
+                    NeuronPosition* current_positions = (NeuronPosition*)malloc(sizeof(NeuronPosition) * nb_neurones);
+                    if (!current_positions) {
+                        fprintf(stderr, "Erreur : Impossible d'allouer de la mémoire pour les positions des neurones.\n");
+                        if (prev_positions) free(prev_positions);
+                        break;
+                    }
+
+                    ListNode* current_neurone_node = couche->neurones->head;
+                    int neuron_index = 0;
+
+                    // Iterate through neurons in the current layer
+                    while (current_neurone_node) {
+                        Neurone* neurone = (Neurone*)current_neurone_node->data;
+                        int x = LAYER_SPACING + couche_index * LAYER_SPACING;
+                        int y = spacing_y * (neuron_index + 1);
+
                         // Draw neuron
-                        DrawNeuron(hdc, x, y, j);
-                        
+                        DrawNeuron(hdc, x, y, neuron_index);
+
                         // Draw bias below neuron
                         char bias_label[20];
-                        sprintf(bias_label, "B:%d", couche.neurones[j].biais);
+                        sprintf(bias_label, "B:%d", neurone->biais);
                         TextOutA(hdc, x - 15, y + NEURON_RADIUS + 5, bias_label, strlen(bias_label));
-                        
-                        // Draw weights from previous layer
-                        if (i > 0) {
-                            Couche prev_couche = g_reseau->couches[i - 1];
-                            for (int k = 0; k < prev_couche.nbNeurones; k++) {
-                                int prev_x = LAYER_SPACING + (i - 1) * LAYER_SPACING;
-                                int prev_y = (prev_couche.nbNeurones > 1) ? WINDOW_HEIGHT / (prev_couche.nbNeurones + 1) * (k + 1) : WINDOW_HEIGHT / 2;
-                                
-                                int weight = couche.neurones[j].poids[k];
-                                DrawWeight(hdc, prev_x + NEURON_RADIUS, prev_y, x - NEURON_RADIUS, y, weight);
+
+                        // Store the neuron's position for drawing connections
+                        current_positions[neuron_index].x = x;
+                        current_positions[neuron_index].y = y;
+
+                        neuron_index++;
+                        current_neurone_node = current_neurone_node->next;
+                    }
+
+                    // After drawing neurons, draw weights from previous layer if not the first layer
+                    if (couche_index > 0 && prev_positions && prev_neurons > 0) {
+                        current_neurone_node = couche->neurones->head;
+                        neuron_index = 0;
+
+                        while (current_neurone_node) {
+                            Neurone* neurone = (Neurone*)current_neurone_node->data;
+
+                            // Traverse the weights linked list
+                            ListNode* current_poids_node = neurone->poids->head;
+                            int weight_index = 0;
+
+                            int current_x = current_positions[neuron_index].x;
+                            int current_y = current_positions[neuron_index].y;
+
+                            while (current_poids_node && weight_index < prev_neurons) {
+                                int weight = *((int*)current_poids_node->data);
+                                int prev_x = prev_positions[weight_index].x;
+                                int prev_y = prev_positions[weight_index].y;
+
+                                // Draw weight line
+                                DrawWeight(hdc, prev_x + NEURON_RADIUS, prev_y, current_x - NEURON_RADIUS, current_y, weight);
+
+                                current_poids_node = current_poids_node->next;
+                                weight_index++;
                             }
+
+                            neuron_index++;
+                            current_neurone_node = current_neurone_node->next;
                         }
                     }
+
+                    // Free the previous layer's positions and update to current
+                    if (prev_positions) {
+                        free(prev_positions);
+                    }
+                    prev_positions = current_positions;
+                    prev_neurons = nb_neurones;
+
+                    couche_index++;
+                    current_couche_node = current_couche_node->next;
+                }
+
+                // Free the last layer's positions
+                if (prev_positions) {
+                    free(prev_positions);
                 }
             }
             

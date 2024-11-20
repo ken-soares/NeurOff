@@ -1,3 +1,27 @@
+#include <stdio.h>
+
+#include "linkedlist_int.h"
+
+int main() {
+    IntLinkedList* list = createIntList();
+
+    appendInt(list, 10);
+    appendInt(list, 20);
+    appendInt(list, 30);
+    displayIntList(list);
+
+    insertInt(list, 15, 1);
+    displayIntList(list);
+
+    deleteInt(list, 20);
+    displayIntList(list);
+
+    freeIntList(list);
+    return 0;
+}
+
+/*
+
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,8 +37,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     srand(time(NULL));
 
     // Define the network structure: 2 input neurons, 1 output neuron
-    int nombre_couches = 5;
-    int liste_neurones[] = {1,10,22,33,1}; // 1 neuron in the output layer
+    int nombre_couches = 3;
+    int liste_neurones[] = {3,2,1}; // 1 neuron in the output layer
 
     // Create the neural network
     ResNeur reseau = CreerResNeur(nombre_couches, liste_neurones, TAILLE);
@@ -33,3 +57,4 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     return gfxResult;
 }
+*/

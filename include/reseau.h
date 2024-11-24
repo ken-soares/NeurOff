@@ -10,7 +10,7 @@ typedef struct {
 } ResNeur;
 
 // Create a neural network
-ResNeur CreerResNeur(int nombre_couches, int* liste_neurones, int nombre_poids_entree);
+ResNeur CreerResNeur(int nombre_couches, LinkedList* liste_neurones, int nombre_poids_entree);
 
 // Free the neural network memory
 void FreeResNeur(ResNeur* reseau);

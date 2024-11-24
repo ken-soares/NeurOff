@@ -23,13 +23,30 @@ int main() {
 
     // Configuration du réseau
     int nombre_couches = 3;
-    int liste_neurones[] = {5, 3, 1}; // 5 neurones dans la couche 1, 3 dans la couche 2, 1 dans la couche 3
+
+    // Création de la liste des neurones par couche
+    LinkedList* liste_neurones = createLinkedList();
+    if (!liste_neurones) {
+        fprintf(stderr, "Erreur lors de la création de la liste des neurones.\n");
+        return EXIT_FAILURE;
+    }
+
+    // Ajout des neurones pour chaque couche
+    int neurones_couche1 = 5;
+    int neurones_couche2 = 3;
+    int neurones_couche3 = 1;
+
+    appendLinkedList(liste_neurones, &neurones_couche1);
+    appendLinkedList(liste_neurones, &neurones_couche2);
+    appendLinkedList(liste_neurones, &neurones_couche3);
+
     int nombre_poids_entree = 4;      // Nombre de poids d'entrée pour la première couche
 
     // Créer le réseau de neurones
     ResNeur reseau = CreerResNeur(nombre_couches, liste_neurones, nombre_poids_entree);
     if (reseau.couches == NULL) {
         fprintf(stderr, "Erreur lors de la création du réseau de neurones.\n");
+        freeLinkedList(liste_neurones);
         return EXIT_FAILURE;
     }
     printf("Réseau de neurones créé avec %d couches.\n", reseau.nbCouches);
@@ -39,6 +56,7 @@ int main() {
     if (!entrees) {
         fprintf(stderr, "Erreur lors de la création des entrées.\n");
         FreeResNeur(&reseau);
+        freeLinkedList(liste_neurones);
         return EXIT_FAILURE;
     }
     for (int i = 0; i < nombre_poids_entree; i++) {
@@ -47,6 +65,7 @@ int main() {
             fprintf(stderr, "Erreur d'allocation pour une entrée.\n");
             freeLinkedList(entrees);
             FreeResNeur(&reseau);
+            freeLinkedList(liste_neurones);
             return EXIT_FAILURE;
         }
         *valeur = rand() % 10; // Valeur aléatoire entre 0 et 9
@@ -55,6 +74,7 @@ int main() {
             free(valeur);
             freeLinkedList(entrees);
             FreeResNeur(&reseau);
+            freeLinkedList(liste_neurones);
             return EXIT_FAILURE;
         }
     }
@@ -70,6 +90,7 @@ int main() {
         fprintf(stderr, "Erreur lors de la propagation des entrées.\n");
         freeLinkedList(entrees);
         FreeResNeur(&reseau);
+        freeLinkedList(liste_neurones);
         return EXIT_FAILURE;
     }
 
@@ -85,6 +106,7 @@ int main() {
         freeLinkedList(entrees);
         freeLinkedList(sorties);
         FreeResNeur(&reseau);
+        freeLinkedList(liste_neurones);
         return EXIT_FAILURE;
     }
 
@@ -92,44 +114,7 @@ int main() {
     freeLinkedList(entrees);
     freeLinkedList(sorties);
     FreeResNeur(&reseau);
+    freeLinkedList(liste_neurones);
 
     return EXIT_SUCCESS;
 }
-
-/*
-
-#include <windows.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include "neurone.h"
-#include "couche.h"
-#include "reseau.h"
-#include "graphics.h"
-
-#define TAILLE 2 // Number of input neurons
-
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-    srand(time(NULL));
-
-    // Define the network structure: 2 input neurons, 1 output neuron
-    int nombre_couches = 3;
-    int liste_neurones[] = {3,2,1}; // 1 neuron in the output layer
-
-    // Create the neural network
-    ResNeur reseau = CreerResNeur(nombre_couches, liste_neurones, TAILLE);
-    if (reseau.couches == NULL) {
-        MessageBox(NULL, "Failed to initialize the neural network.", "Error", MB_ICONERROR | MB_OK);
-        return 1;
-    }
-
-    // Run the graphical interface
-    printf("Launching graphical interface...\n");
-    int gfxResult = RunGraphics(hInstance, &reseau);
-    printf("Graphical interface exited with result: %d\n", gfxResult);
-
-    // Free the neural network memory
-    FreeResNeur(&reseau);
-
-    return gfxResult;
-}*/

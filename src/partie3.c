@@ -3,7 +3,7 @@
 #include "reseau.h"
 
 // Fonction pour créer un réseau de neurones
-ResNeur CreerResNeur(int nombre_couches, int* liste_neurones, int nombre_poids_entree) {
+ResNeur CreerResNeur(int nombre_couches, LinkedList* liste_neurones, int nombre_poids_entree) {
     ResNeur reseau;
     reseau.couches = createLinkedList();
     reseau.nbCouches = 0; // Initialize the layer count
@@ -12,15 +12,22 @@ ResNeur CreerResNeur(int nombre_couches, int* liste_neurones, int nombre_poids_e
         return (ResNeur){0};
     }
 
+    ListNode* current_neurones = liste_neurones->head;
     for (int i = 0; i < nombre_couches; i++) {
-        int nombre_entrees = (i == 0) ? nombre_poids_entree : liste_neurones[i - 1];
+        if (!current_neurones) {
+            fprintf(stderr, "Nombre de neurones insuffisant pour le nombre de couches spécifié.\n");
+            FreeResNeur(&reseau);
+            return (ResNeur){0};
+        }
+
+        int nombre_entrees = (i == 0) ? nombre_poids_entree : *((int*)current_neurones->data);
         Couche* couche = (Couche*)malloc(sizeof(Couche));
         if (!couche) {
             fprintf(stderr, "Erreur d'allocation pour la couche.\n");
             FreeResNeur(&reseau);
             return (ResNeur){0};
         }
-        *couche = InitCouche(liste_neurones[i], nombre_entrees);
+        *couche = InitCouche(*((int*)current_neurones->data), nombre_entrees);
         // Check if initialization was successful
         if (couche->neurones == NULL) {
             fprintf(stderr, "Erreur lors de l'initialisation de la couche.\n");
@@ -36,6 +43,7 @@ ResNeur CreerResNeur(int nombre_couches, int* liste_neurones, int nombre_poids_e
             return (ResNeur){0};
         }
         reseau.nbCouches++; // Increment the layer count
+        current_neurones = current_neurones->next;
     }
 
     return reseau;

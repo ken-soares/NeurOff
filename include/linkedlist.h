@@ -47,7 +47,6 @@ ListNode* findLinkedList(LinkedList* list, void* data, int (*compare)(void*, voi
 //La fonction de comparaison doit retourner 0 si les données correspondent.
 //return 1 si un nœud a été supprimé, 0 sinon.
 int removeLinkedList(LinkedList* list, void* data, int (*compare)(void*, void*));
-int removeLinkedList(LinkedList* list, void* data, int (*compare)(void*, void*));
 
 //Fonction utilitaire pour itérer sur la liste chaînée et appliquer une fonction à chaque donnée des nœuds.
 //param list Pointeur vers la LinkedList.

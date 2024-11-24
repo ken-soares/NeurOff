@@ -25,8 +25,8 @@ int main() {
     int nombre_couches = 3;
 
     // Création de la liste des neurones par couche
-    LinkedList* liste_neurones = createLinkedList();
-    if (!liste_neurones) {
+    LinkedList* liste_nombre_neurones = createLinkedList();
+    if (!liste_nombre_neurones) {
         fprintf(stderr, "Erreur lors de la création de la liste des neurones.\n");
         return EXIT_FAILURE;
     }
@@ -36,17 +36,17 @@ int main() {
     int neurones_couche2 = 3;
     int neurones_couche3 = 1;
 
-    appendLinkedList(liste_neurones, &neurones_couche1);
-    appendLinkedList(liste_neurones, &neurones_couche2);
-    appendLinkedList(liste_neurones, &neurones_couche3);
+    appendLinkedList(liste_nombre_neurones, &neurones_couche1);
+    appendLinkedList(liste_nombre_neurones, &neurones_couche2);
+    appendLinkedList(liste_nombre_neurones, &neurones_couche3);
 
-    int nombre_poids_entree = 4;      // Nombre de poids d'entrée pour la première couche
+    int nombre_poids_entree = 5;      // Nombre de poids d'entrée pour la première couche
 
     // Créer le réseau de neurones
-    ResNeur reseau = CreerResNeur(nombre_couches, liste_neurones, nombre_poids_entree);
+    ResNeur reseau = CreerResNeur(nombre_couches, liste_nombre_neurones, nombre_poids_entree);
     if (reseau.couches == NULL) {
         fprintf(stderr, "Erreur lors de la création du réseau de neurones.\n");
-        freeLinkedList(liste_neurones);
+        freeLinkedList(liste_nombre_neurones);
         return EXIT_FAILURE;
     }
     printf("Réseau de neurones créé avec %d couches.\n", reseau.nbCouches);
@@ -56,7 +56,7 @@ int main() {
     if (!entrees) {
         fprintf(stderr, "Erreur lors de la création des entrées.\n");
         FreeResNeur(&reseau);
-        freeLinkedList(liste_neurones);
+        freeLinkedList(liste_nombre_neurones);
         return EXIT_FAILURE;
     }
     for (int i = 0; i < nombre_poids_entree; i++) {
@@ -65,7 +65,7 @@ int main() {
             fprintf(stderr, "Erreur d'allocation pour une entrée.\n");
             freeLinkedList(entrees);
             FreeResNeur(&reseau);
-            freeLinkedList(liste_neurones);
+            freeLinkedList(liste_nombre_neurones);
             return EXIT_FAILURE;
         }
         *valeur = rand() % 10; // Valeur aléatoire entre 0 et 9
@@ -74,7 +74,7 @@ int main() {
             free(valeur);
             freeLinkedList(entrees);
             FreeResNeur(&reseau);
-            freeLinkedList(liste_neurones);
+            freeLinkedList(liste_nombre_neurones);
             return EXIT_FAILURE;
         }
     }
@@ -90,7 +90,7 @@ int main() {
         fprintf(stderr, "Erreur lors de la propagation des entrées.\n");
         freeLinkedList(entrees);
         FreeResNeur(&reseau);
-        freeLinkedList(liste_neurones);
+        freeLinkedList(liste_nombre_neurones);
         return EXIT_FAILURE;
     }
 
@@ -106,7 +106,7 @@ int main() {
         freeLinkedList(entrees);
         freeLinkedList(sorties);
         FreeResNeur(&reseau);
-        freeLinkedList(liste_neurones);
+        freeLinkedList(liste_nombre_neurones);
         return EXIT_FAILURE;
     }
 
@@ -114,7 +114,7 @@ int main() {
     freeLinkedList(entrees);
     freeLinkedList(sorties);
     FreeResNeur(&reseau);
-    freeLinkedList(liste_neurones);
+    freeLinkedList(liste_nombre_neurones);
 
     return EXIT_SUCCESS;
 }

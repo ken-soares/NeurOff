@@ -3,7 +3,7 @@
 #include "reseau.h"
 
 // Fonction pour créer un réseau de neurones
-ResNeur CreerResNeur(int nombre_couches, LinkedList* liste_neurones, int nombre_poids_entree) {
+ResNeur CreerResNeur(int nombre_couches, LinkedList* liste_nombre_neurones_par_couche, int nombre_poids_entree) {
     ResNeur reseau;
     reseau.couches = createLinkedList();
     reseau.nbCouches = 0; // Initialize the layer count
@@ -12,7 +12,7 @@ ResNeur CreerResNeur(int nombre_couches, LinkedList* liste_neurones, int nombre_
         return (ResNeur){0};
     }
 
-    ListNode* current_neurones = liste_neurones->head;
+    ListNode* current_neurones = liste_nombre_neurones_par_couche->head;
     for (int i = 0; i < nombre_couches; i++) {
         if (!current_neurones) {
             fprintf(stderr, "Nombre de neurones insuffisant pour le nombre de couches spécifié.\n");

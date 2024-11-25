@@ -15,7 +15,11 @@ ResNeur CreerResNeur(int nombre_couches, LinkedList* liste_nombre_neurones_par_c
 // Free the neural network memory
 void FreeResNeur(ResNeur* reseau);
 
-// Propagate inputs through the network and obtain outputs
+
 LinkedList* Propagate(ResNeur* reseau, LinkedList* entrees);
+
+ResNeur InitResET(int n);
+ResNeur InitResOU(int n);
+ResNeur InitResNOT();
 
 #endif // NEUROFF_RESEAU_H

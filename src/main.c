@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include "reseau.h"
 #include "linkedlist.h"
-#include "graphics.h"
+
+#define N 3
 
 // Fonction de comparaison pour les entiers
 int compareInts(void* a, void* b) {
@@ -18,6 +18,43 @@ void printInt(void* data) {
     printf("%d ", *(int*)data);
 }
 
+
+
+int main() {
+
+    /* CREATION ET TEST DES RESEAUX ET/OU/NON */
+
+    ResNeur et = InitResET(3);
+    Couche cet = *(Couche*)(et.couches->head->data);
+    Neurone net = *(Neurone*)(cet.neurones->head->data);
+    puts("-- ENTREES ET | SEUIL ET --");
+    iterateLinkedList(net.poids, printInt);
+    printf(" | %d\n", net.biais);
+
+    ResNeur ou = InitResOU(3);
+    Couche cou = *(Couche*)(ou.couches->head->data);
+    Neurone nou = *(Neurone*)(cou.neurones->head->data);
+    puts("-- ENTREES OU | SEUIL OU --");
+    iterateLinkedList(nou.poids, printInt);
+    printf(" | %d\n", nou.biais);
+
+    ResNeur non = InitResNOT();
+    Couche cnon = *(Couche*)(non.couches->head->data);
+    Neurone nnon = *(Neurone*)(cnon.neurones->head->data);
+
+    puts("--ENTREE NON | SEUIL NON --");
+    printf("%d", *(int*)nnon.poids->head->data);
+    printf(" | %d\n", nnon.biais);
+
+    FreeResNeur(&et);
+    FreeResNeur(&ou);
+    FreeResNeur(&non);
+
+    return EXIT_SUCCESS;
+}
+
+
+/*
 int main() {
     srand(time(NULL));
 
@@ -99,17 +136,6 @@ int main() {
     iterateLinkedList(sorties, printInt);
     printf("\n");   
 
-    // Initialiser et exécuter l'interface graphique
-    HINSTANCE hInstance = GetModuleHandle(NULL);
-    if (RunGraphics(hInstance, &reseau) != 0) {
-        fprintf(stderr, "Erreur lors de l'exécution de l'interface graphique.\n");
-        freeLinkedList(entrees);
-        freeLinkedList(sorties);
-        FreeResNeur(&reseau);
-        freeLinkedList(liste_nombre_neurones);
-        return EXIT_FAILURE;
-    }
-
     // Libérer la mémoire allouée
     freeLinkedList(entrees);
     freeLinkedList(sorties);
@@ -118,3 +144,5 @@ int main() {
 
     return EXIT_SUCCESS;
 }
+
+*/

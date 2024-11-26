@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "reseau.h"
 #include "linkedlist.h"
 
@@ -22,127 +23,105 @@ void printInt(void* data) {
 
 int main() {
 
-    /* CREATION ET TEST DES RESEAUX ET/OU/NON */
+    // pour les A,B,C aléatoires
+    srand(time(NULL));
 
-    ResNeur et = InitResET(3);
-    Couche cet = *(Couche*)(et.couches->head->data);
-    Neurone net = *(Neurone*)(cet.neurones->head->data);
-    puts("-- ENTREES ET | SEUIL ET --");
-    iterateLinkedList(net.poids, printInt);
-    printf(" | %d\n", net.biais);
+    /* CREATION ET VERIF DES RESEAUX ET/OU/NON */
+    ResNeur et1 = InitResET(3);
+    ResNeur et2 = InitResET(2);
+    ResNeur ou = InitResOU(2);
+    ResNeur non = InitResNOT();
 
-    ResNeur ou = InitResOU(3);
+    Couche cet1 = *(Couche*)(et1.couches->head->data);
+    Neurone net1 = *(Neurone*)(cet1.neurones->head->data);
+    puts("-- ENTREES ET1 | SEUIL ET1 --");
+    iterateLinkedList(net1.poids, printInt);
+    printf(" | %d\n", net1.biais);
+
+    Couche cet2 = *(Couche*)(et2.couches->head->data);
+    Neurone net2 = *(Neurone*)(cet2.neurones->head->data);
+    puts("-- ENTREES ET2 | SEUIL ET2 --");
+    iterateLinkedList(net2.poids, printInt);
+    printf(" | %d\n", net2.biais);
+
+
     Couche cou = *(Couche*)(ou.couches->head->data);
     Neurone nou = *(Neurone*)(cou.neurones->head->data);
     puts("-- ENTREES OU | SEUIL OU --");
     iterateLinkedList(nou.poids, printInt);
     printf(" | %d\n", nou.biais);
 
-    ResNeur non = InitResNOT();
     Couche cnon = *(Couche*)(non.couches->head->data);
     Neurone nnon = *(Neurone*)(cnon.neurones->head->data);
-
     puts("--ENTREE NON | SEUIL NON --");
     printf("%d", *(int*)nnon.poids->head->data);
     printf(" | %d\n", nnon.biais);
 
-    FreeResNeur(&et);
+    puts("-------");
+
+
+    /* CREATION DES ENTREES */
+    int a = rand() % 2;
+    int b = rand() % 2;
+    int c = rand() % 2;
+
+    printf("A: %d\n", a);
+    printf("B: %d\n", b);
+    printf("C: %d\n", c);
+
+    puts("-------");
+
+
+    /* PROPAGATIONS */
+    
+
+    LinkedList* sortie_et1 = createLinkedList();
+    LinkedList* sortie_et2 = createLinkedList();
+    LinkedList* sortie_globale = createLinkedList();
+
+
+
+    // sortie_et1
+    LinkedList* not_b = createLinkedList();
+    appendLinkedList(not_b, &b);
+    not_b = Propagate(&non, not_b);
+    printf("SORTIE NON B: %d\n", *(int*)not_b->head->data);
+    
+
+    appendLinkedList(sortie_et1, not_b->head->data);
+    appendLinkedList(sortie_et1, &a);
+    appendLinkedList(sortie_et1, &c);
+
+    sortie_et1 = Propagate(&et1, sortie_et1);
+    printf("SORTIE BRANCHE 1: %d\n", *(int*)sortie_et1->head->data);
+
+
+    // sortie_et2
+    LinkedList* not_c = createLinkedList();
+    appendLinkedList(not_c, &c);
+    not_c = Propagate(&non, not_c);
+    printf("SORTIE NON C: %d\n", *(int*)not_c->head->data);
+
+    appendLinkedList(sortie_et1, not_c->head->data);
+    appendLinkedList(sortie_et1, &a);
+
+    sortie_et2 = Propagate(&et2, sortie_et2);
+    printf("SORTIE BRANCHE 2: %d\n", *(int*)sortie_et2->head->data);
+
+    // sortie_globale
+    appendLinkedList(sortie_globale, sortie_et1->head->data);
+    appendLinkedList(sortie_globale, sortie_et2->head->data);
+
+    sortie_globale = Propagate(&ou, sortie_globale);
+
+    printf("SORTIE GLOBALE DU RESEAU: %d\n", *(int*)sortie_globale->head->data);
+
+
+    /* SUPPR MEMOIRE DES RESEAUX ET/OU/NON */
+    FreeResNeur(&et1);
+    FreeResNeur(&et2);
     FreeResNeur(&ou);
     FreeResNeur(&non);
 
     return EXIT_SUCCESS;
 }
-
-
-/*
-int main() {
-    srand(time(NULL));
-
-    // Configuration du réseau
-    int nombre_couches = 3;
-
-    // Création de la liste des neurones par couche
-    LinkedList* liste_nombre_neurones = createLinkedList();
-    if (!liste_nombre_neurones) {
-        fprintf(stderr, "Erreur lors de la création de la liste des neurones.\n");
-        return EXIT_FAILURE;
-    }
-
-    // Ajout des neurones pour chaque couche
-    int neurones_couche1 = 5;
-    int neurones_couche2 = 3;
-    int neurones_couche3 = 1;
-
-    appendLinkedList(liste_nombre_neurones, &neurones_couche1);
-    appendLinkedList(liste_nombre_neurones, &neurones_couche2);
-    appendLinkedList(liste_nombre_neurones, &neurones_couche3);
-
-    int nombre_poids_entree = 5;      // Nombre de poids d'entrée pour la première couche
-
-    // Créer le réseau de neurones
-    ResNeur reseau = CreerResNeur(nombre_couches, liste_nombre_neurones, nombre_poids_entree);
-    if (reseau.couches == NULL) {
-        fprintf(stderr, "Erreur lors de la création du réseau de neurones.\n");
-        freeLinkedList(liste_nombre_neurones);
-        return EXIT_FAILURE;
-    }
-    printf("Réseau de neurones créé avec %d couches.\n", reseau.nbCouches);
-
-    // Préparer les entrées
-    LinkedList* entrees = createLinkedList();
-    if (!entrees) {
-        fprintf(stderr, "Erreur lors de la création des entrées.\n");
-        FreeResNeur(&reseau);
-        freeLinkedList(liste_nombre_neurones);
-        return EXIT_FAILURE;
-    }
-    for (int i = 0; i < nombre_poids_entree; i++) {
-        int* valeur = (int*)malloc(sizeof(int));
-        if (!valeur) {
-            fprintf(stderr, "Erreur d'allocation pour une entrée.\n");
-            freeLinkedList(entrees);
-            FreeResNeur(&reseau);
-            freeLinkedList(liste_nombre_neurones);
-            return EXIT_FAILURE;
-        }
-        *valeur = rand() % 10; // Valeur aléatoire entre 0 et 9
-        if (!appendLinkedList(entrees, valeur)) {
-            fprintf(stderr, "Erreur lors de l'ajout d'une entrée.\n");
-            free(valeur);
-            freeLinkedList(entrees);
-            FreeResNeur(&reseau);
-            freeLinkedList(liste_nombre_neurones);
-            return EXIT_FAILURE;
-        }
-    }
-
-    // Afficher les entrées
-    printf("Entrées du réseau: ");
-    iterateLinkedList(entrees, printInt);
-    printf("\n");
-
-    // Propager les entrées à travers le réseau
-    LinkedList* sorties = Propagate(&reseau, entrees);
-    if (!sorties) {
-        fprintf(stderr, "Erreur lors de la propagation des entrées.\n");
-        freeLinkedList(entrees);
-        FreeResNeur(&reseau);
-        freeLinkedList(liste_nombre_neurones);
-        return EXIT_FAILURE;
-    }
-
-    // Afficher les sorties
-    printf("Sorties du réseau: ");
-    iterateLinkedList(sorties, printInt);
-    printf("\n");   
-
-    // Libérer la mémoire allouée
-    freeLinkedList(entrees);
-    freeLinkedList(sorties);
-    FreeResNeur(&reseau);
-    freeLinkedList(liste_nombre_neurones);
-
-    return EXIT_SUCCESS;
-}
-
-*/

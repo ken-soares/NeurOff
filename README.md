@@ -2,20 +2,24 @@
 Projet de LO21 sur les réseaux de neuronnes en C
 Voir [énoncé](enonce.md)
 
+### Prérequis logiciels
+- CMake (version récente pour utiliser FetchContent nécéssaire au front-end)
+- Make
+- Un compilateur c/c++
+
 ### explication des dossiers
 ```
     src: code source en C
     include: fichiers d'en-tête
-    obj: fichiers objets
-    bin: fichiers exécutables
     algos: algorithmes implémentés par la suite en C
+    front: dossier source pour la visualisation graphique du projet (ne fonctionne pas sur WSL)
 ```
 
-La compilation sera prise en compte par Make via un Makefile et le compilateur
-GCC. Il conviendra d'avoir les deux programmes installés sur sa machine
-
-### commandes utiles
+### Commandes de compilation
 ```
-make run
-make clean
+git clone https://github.com/ken-soares/NeurOff.git
+cd NeurOff/
+cmake .
+cmake --build .
+./projet
 ```

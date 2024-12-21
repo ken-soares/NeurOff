@@ -1,3 +1,4 @@
+#include "utils.h"
 #include "couche.h"
 #include "reseau.h"
 #include "linkedlist.h"
@@ -13,21 +14,12 @@ ResNeur InitResET(int n) {
     int a = 1;
     appendLinkedList(liste_nb_neur, &a);
 
-    // récupération des données qui nous intéressent
     ResNeur reseau = CreerResNeur(1, liste_nb_neur, n);
-    Couche couche = *(Couche*)(reseau.couches->head->data);
-    Neurone* neur = (Neurone*)(couche.neurones->head->data);
-    ListNode* l = neur->poids->head;
-
-
+    Neurone* neur = getNeuroneFromNetwork(reseau);
+    
     // set le biais du neurone à n
     neur->biais = n;
-   
-    // remettre correctement tous les poids du neurone à 1
-    while(l) {
-        *(int*)l->data = 1;
-        l = l->next;
-    }
+    setAllPoidsNeurone(neur, 1);
     
     return reseau;
 }
@@ -40,17 +32,13 @@ ResNeur InitResOU(int n) {
 
 
     ResNeur reseau = CreerResNeur(1, liste_nb_neur, n);
-    Couche couche = *(Couche*)(reseau.couches->head->data);
-    Neurone* neur = (Neurone*)(couche.neurones->head->data);
-    ListNode* l = neur->poids->head;
-
+    Neurone* neur = getNeuroneFromNetwork(reseau);
+    
     // set le biais du neurone à 1
     neur->biais = 1;
     
-    while(l) {
-        *(int*)l->data = 1;
-        l = l->next;
-    }
+    // Set all weights to 1 using the new function
+    setAllPoidsNeurone(neur, 1);
     
     return reseau;
 }
@@ -63,12 +51,10 @@ ResNeur InitResNOT() {
 
 
     ResNeur reseau = CreerResNeur(1, liste_nb_neur, 1);
-    Couche couche = *(Couche*)(reseau.couches->head->data);
-    Neurone* neur = (Neurone*)(couche.neurones->head->data);
-    ListNode* l = neur->poids->head;
+    Neurone* neur = getNeuroneFromNetwork(reseau);
 
     // comme il n'y a qu'un seul poids, on set directement sa valeur 1 -1
-    *(int*)l->data = -1;
+    *(int*)neur->poids->head->data = -1;
 
     // set le biais du neurone à 0
     neur->biais = 0;

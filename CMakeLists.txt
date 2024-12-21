@@ -35,7 +35,9 @@ add_executable(${PROJECT_NAME}
     src/partie1.c
     src/partie2.c
     src/partie3.c
-    src/partie4.c)
+    src/partie4.c
+    src/utils.c
+    )
 
 # Link raylib to the target
 #target_link_libraries(${PROJECT_NAME} raylib)

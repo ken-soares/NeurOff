@@ -3,7 +3,7 @@
 #include <time.h>
 #include "reseau.h"
 #include "linkedlist.h"
-
+#include "utils.h"
 #define N 3
 
 // Fonction de comparaison pour les entiers
@@ -18,7 +18,6 @@ int compareInts(void* a, void* b) {
 void printInt(void* data) {
     printf("%d ", *(int*)data);
 }
-
 
 
 int main() {
@@ -117,11 +116,110 @@ int main() {
     printf("SORTIE GLOBALE DU RESEAU: %d\n", *(int*)sortie_globale->head->data);
 
 
+
+    LinkedList* liste_nb_neur = createLinkedList();
+    a = 2;
+    b = 1;
+    appendLinkedList(liste_nb_neur, &a);
+    appendLinkedList(liste_nb_neur, &b);
+
+    ResNeur reseau = CreerResNeur(2,liste_nb_neur, 3);
+    //show poids
+    // Afficher les poids du premier neurone du réseau
+    Neurone* neurone = getNeuroneFromNetwork(reseau);
+    ListNode* poids = getPoidsFromNeurone(neurone);
+    printf("\nPoids du premier neurone:\n");
+    while (poids) {
+        printf("%d ", *(int*)poids->data);
+        poids = poids->next;
+    }
+    printf("\n");
+
+    // Afficher les poids du deuxième neurone du réseau
+    Couche* premiere_couche = getCoucheFromNetwork(reseau);
+    Neurone* deuxieme_neurone = (Neurone*)(premiere_couche->neurones->head->next->data);
+    ListNode* poids2 = getPoidsFromNeurone(deuxieme_neurone);
+    printf("\nPoids du deuxieme neurone:\n"); 
+    while (poids2) {
+        printf("%d ", *(int*)poids2->data);
+        poids2 = poids2->next;
+    }
+    printf("\n");
+
+    RunGraphics(&reseau);
+
+
+
     /* SUPPR MEMOIRE DES RESEAUX ET/OU/NON */
     FreeResNeur(&et1);
     FreeResNeur(&et2);
     FreeResNeur(&ou);
     FreeResNeur(&non);
+
+
+
+
+
+
+
+
+    int num_networks;
+    printf("Combien de réseaux voulez-vous créer? ");
+    scanf("%d", &num_networks);
+
+    for (int i = 0; i < num_networks; i++) {
+        int num_layers, weight;
+        printf("Réseau %d:\n", i + 1);
+        printf("Nombre de couches: ");
+        scanf("%d", &num_layers);
+
+        LinkedList* liste_nb_neur = createLinkedList();
+        
+        // Allocate memory for each neuron count to persist through the loop
+        for (int j = 0; j < num_layers; j++) {
+            int* num_neurons = (int*)malloc(sizeof(int));
+            if (!num_neurons) {
+                fprintf(stderr, "Erreur d'allocation mémoire\n");
+                continue;
+            }
+            
+            printf("Nombre de neurones pour la couche %d: ", j + 1);
+            scanf("%d", num_neurons);
+            
+            if (!appendLinkedList(liste_nb_neur, num_neurons)) {
+                fprintf(stderr, "Erreur d'ajout à la liste\n");
+                free(num_neurons);
+                continue;
+            }
+        }
+
+        printf("Nombre d'entrées pour le réseau: ");
+        scanf("%d", &weight);
+
+        ResNeur reseau = CreerResNeur(num_layers, liste_nb_neur, weight);
+
+        // Display network info
+        printf("\nStructure du réseau:\n");
+        ListNode* current = liste_nb_neur->head;
+        for (int j = 0; j < num_layers; j++) {
+            printf("Couche %d: %d neurones\n", j + 1, *(int*)current->data);
+            current = current->next;
+        }
+
+        // Visualize the network
+        RunGraphics(&reseau);
+
+        // Cleanup
+        FreeResNeur(&reseau);
+        
+        // Free the liste_nb_neur and its contents
+        current = liste_nb_neur->head;
+        while (current) {
+            free(current->data);
+            current = current->next;
+        }
+        freeLinkedList(liste_nb_neur);
+    }
 
     return EXIT_SUCCESS;
 }

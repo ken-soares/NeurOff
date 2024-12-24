@@ -8,7 +8,7 @@
 Couche InitCouche(int nombre_neurones, int nombre_entrees) {
     Couche couche;
     couche.neurones = createLinkedList();
-    couche.nbNeurones = 0; // Initialize the neuron count
+    couche.nbNeurones = 0;
     if (!couche.neurones) {
         return (Couche){0};
     }
@@ -21,7 +21,6 @@ Couche InitCouche(int nombre_neurones, int nombre_entrees) {
             return (Couche){0};
         }
         *neurone = InitNeur(nombre_entrees);
-        // Check if initialization was successful
         if (neurone->poids == NULL) {
             fprintf(stderr, "Erreur lors de l'initialisation du neurone.\n");
             free(neurone);
@@ -35,7 +34,7 @@ Couche InitCouche(int nombre_neurones, int nombre_entrees) {
             FreeCouche(&couche);
             return (Couche){0};
         }
-        couche.nbNeurones++; // Increment the neuron count
+        couche.nbNeurones++;
     }
     return couche;
 }

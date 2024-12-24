@@ -6,9 +6,8 @@
 ResNeur CreerResNeur(int nombre_couches, LinkedList* liste_nombre_neurones_par_couche, int nombre_poids_entree) {
     ResNeur reseau;
     reseau.couches = createLinkedList();
-    reseau.nbCouches = 0; // Initialize the layer count
+    reseau.nbCouches = 0;
     if (!reseau.couches) {
-        // Gestion de l'erreur d'allocation
         return (ResNeur){0};
     }
 
@@ -28,7 +27,6 @@ ResNeur CreerResNeur(int nombre_couches, LinkedList* liste_nombre_neurones_par_c
             return (ResNeur){0};
         }
         *couche = InitCouche(*((int*)current_neurones->data), nombre_entrees);
-        // Check if initialization was successful
         if (couche->neurones == NULL) {
             fprintf(stderr, "Erreur lors de l'initialisation de la couche.\n");
             free(couche);
@@ -42,7 +40,7 @@ ResNeur CreerResNeur(int nombre_couches, LinkedList* liste_nombre_neurones_par_c
             FreeResNeur(&reseau);
             return (ResNeur){0};
         }
-        reseau.nbCouches++; // Increment the layer count
+        reseau.nbCouches++;
         current_neurones = current_neurones->next;
     }
 

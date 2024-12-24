@@ -4,6 +4,10 @@ project(projet)
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Set debug build type and flags
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0")
+
 # Dependencies
 set(RAYLIB_VERSION 5.0)
 find_package(raylib ${RAYLIB_VERSION} QUIET) # QUIET or REQUIRED
@@ -51,4 +55,3 @@ target_link_libraries(${PROJECT_NAME} -static)
 #    target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
 #    target_link_libraries(${PROJECT_NAME} "-framework OpenGL")
 #endif()
-

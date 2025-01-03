@@ -4,7 +4,9 @@
 #include "raylib.h"
 #include "reseau.h"
 
-// Function to initialize and run the graphical interface
+// Fonction pour initialiser et exécuter l'interface graphique
+// Prend en paramètre un pointeur vers le réseau de neurones
+// Retourne un entier indiquant le succès ou l'échec de l'exécution
 int RunGraphics(ResNeur* reseau);
 
 #endif // GRAPHICS_H

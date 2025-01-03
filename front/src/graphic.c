@@ -40,6 +40,9 @@ void DrawWeight(int x1, int y1, int x2, int y2, int weight) {
 int RunGraphics(ResNeur* reseau) {
     g_reseau = reseau;
 
+    // Set log level to suppress debug information
+    SetTraceLogLevel(LOG_WARNING);
+
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Neural Network Visualization");
     SetTargetFPS(60);
 
@@ -109,15 +112,18 @@ int RunGraphics(ResNeur* reseau) {
                         int current_x = current_positions[neuron_index].x;
                         int current_y = current_positions[neuron_index].y;
 
-                        while (current_poids_node && weight_index < prev_neurons) {
-                            int weight = *((int*)current_poids_node->data);
+                        // Ensure all weights are drawn, even if the current layer has fewer neurons
+                        while (weight_index < prev_neurons) {
+                            int weight = (current_poids_node) ? *((int*)current_poids_node->data) : 0;
                             int prev_x = prev_positions[weight_index].x;
                             int prev_y = prev_positions[weight_index].y;
 
                             // Draw weight line
                             DrawWeight(prev_x + NEURON_RADIUS, prev_y, current_x - NEURON_RADIUS, current_y, weight);
 
-                            current_poids_node = current_poids_node->next;
+                            if (current_poids_node) {
+                                current_poids_node = current_poids_node->next;
+                            }
                             weight_index++;
                         }
 

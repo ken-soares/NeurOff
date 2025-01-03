@@ -5,6 +5,7 @@
 // Fonction pour créer un réseau de neurones
 ResNeur CreerResNeur(int nombre_couches, LinkedList* liste_nombre_neurones_par_couche, int nombre_poids_entree) {
     ResNeur reseau;
+    // Crée une liste chaînée pour stocker les couches
     reseau.couches = createLinkedList();
     reseau.nbCouches = 0;
     if (!reseau.couches) {
@@ -19,13 +20,16 @@ ResNeur CreerResNeur(int nombre_couches, LinkedList* liste_nombre_neurones_par_c
             return (ResNeur){0};
         }
 
+        // Détermine le nombre d'entrées pour la couche actuelle
         int nombre_entrees = (i == 0) ? nombre_poids_entree : *((int*)current_neurones->data);
+        // Alloue de la mémoire pour chaque couche
         Couche* couche = (Couche*)malloc(sizeof(Couche));
         if (!couche) {
             fprintf(stderr, "Erreur d'allocation pour la couche.\n");
             FreeResNeur(&reseau);
             return (ResNeur){0};
         }
+        // Initialise la couche avec le nombre de neurones et d'entrées
         *couche = InitCouche(*((int*)current_neurones->data), nombre_entrees);
         if (couche->neurones == NULL) {
             fprintf(stderr, "Erreur lors de l'initialisation de la couche.\n");
@@ -33,6 +37,7 @@ ResNeur CreerResNeur(int nombre_couches, LinkedList* liste_nombre_neurones_par_c
             FreeResNeur(&reseau);
             return (ResNeur){0};
         }
+        // Ajoute la couche au réseau
         if (!appendLinkedList(reseau.couches, couche)) {
             fprintf(stderr, "Erreur lors de l'ajout de la couche au réseau.\n");
             FreeCouche(couche);
@@ -47,7 +52,7 @@ ResNeur CreerResNeur(int nombre_couches, LinkedList* liste_nombre_neurones_par_c
     return reseau;
 }
 
-// Fonction pour libérer la mémoire allouée pour un réseau de neurones
+// Libère la mémoire allouée pour un réseau de neurones
 void FreeResNeur(ResNeur* reseau) {
     if (reseau->couches) {
         ListNode* current = reseau->couches->head;
@@ -70,6 +75,7 @@ LinkedList* Propagate(ResNeur* reseau, LinkedList* entrees) {
 
     while (current_couche) {
         Couche* couche = (Couche*)current_couche->data;
+        // Calcule les sorties de la couche actuelle
         LinkedList* sorties = OutCouche(couche, current_entrees);
         if (!sorties) {
             if (current_entrees != entrees) {

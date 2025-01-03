@@ -1,7 +1,7 @@
 #ifndef NEUROFF_COUCHE_H
 #define NEUROFF_COUCHE_H
 #include "neurone.h"
-#include "linkedlist.h" // Assuming a generic linked list implementation
+#include "linkedlist.h"
 
 // Structure représentant une couche de neurones artificiels
 typedef struct
@@ -19,8 +19,8 @@ Couche InitCouche(int nombre_neurones, int nombre_entrees);
 // Prend en paramètre un pointeur vers la couche
 void FreeCouche(Couche* couche);
 
-// Fonction pour calculer les sorties d'une couche en fonction des entrées et d'un seuil
-// Prend en paramètres la couche, la liste des entrées et la liste des sorties
+// Fonction pour calculer les sorties d'une couche en fonction des entrées
+// Prend en paramètres la couche et la liste des entrées
 // Retourne une liste d'entiers représentant les sorties de chaque neurone
 LinkedList* OutCouche(Couche* couche, LinkedList* entrees);
 

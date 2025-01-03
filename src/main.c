@@ -21,11 +21,11 @@ void printInt(void* data) {
 
 
 int main() {
-
     // pour les A,B,C aléatoires
     srand(time(NULL));
 
     /* CREATION ET VERIF DES RESEAUX ET/OU/NON */
+    /*
     ResNeur et1 = InitResET(3);
     ResNeur et2 = InitResET(2);
     ResNeur ou = InitResOU(2);
@@ -59,7 +59,7 @@ int main() {
     puts("-------");
 
 
-    /* CREATION DES ENTREES */
+    // CREATION DES ENTREES 
     int a = rand() % 2;
     int b = rand() % 2;
     int c = rand() % 2;
@@ -71,7 +71,7 @@ int main() {
     puts("-------");
 
 
-    /* PROPAGATIONS */
+    // PROPAGATIONS
     
 
     LinkedList* sortie_et1 = createLinkedList();
@@ -150,17 +150,13 @@ int main() {
 
 
 
-    /* SUPPR MEMOIRE DES RESEAUX ET/OU/NON */
+    //SUPPR MEMOIRE DES RESEAUX ET/OU/NON 
     FreeResNeur(&et1);
     FreeResNeur(&et2);
     FreeResNeur(&ou);
     FreeResNeur(&non);
 
-
-
-
-
-
+*/
 
 
     int num_networks;

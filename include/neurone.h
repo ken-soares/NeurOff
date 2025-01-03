@@ -1,7 +1,7 @@
 #ifndef NEUROFF_NEURONE_H
 #define NEUROFF_NEURONE_H
 
-#include "linkedlist.h" // Assuming a generic linked list implementation
+#include "linkedlist.h"
 
 // Structure représentant un neurone artificiel
 typedef struct {
